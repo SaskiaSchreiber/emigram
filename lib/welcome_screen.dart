@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:emigram/register_screen.dart';
+import 'package:emigram/login_screen.dart';
 
 const primary = const Color(0xFF1EC969);
 const accent = const Color(0xFFE5FFE7);
@@ -60,20 +61,17 @@ class MyApp extends StatelessWidget {
                       )
                   ),
                   Container(
-                      child: TextButton(
-                        style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
-                        ),
-                        onPressed: () { },
-                        child: const Text('BEREITS REGISTRIERT?'),
-                      )
+                      padding: const EdgeInsets.fromLTRB(0, 10,0, 0),
+                      child: const Text('BEREITS REGISTRIERT?', style: TextStyle(color: Colors.black,fontSize: 15))
                   ),
                   Container(
                       child: TextButton(
                         style: ButtonStyle(
                             foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
                         ),
-                        onPressed: () { },
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
+                        },
                         child: const Text('LOGIN'),
                       )
                   )
