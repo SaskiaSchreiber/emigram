@@ -1,6 +1,7 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
+import 'package:emigram/register_screen.dart';
+
 const primary = const Color(0xFF1EC969);
 const accent = const Color(0xFFE5FFE7);
 
@@ -51,9 +52,10 @@ class MyApp extends StatelessWidget {
                       child: TextButton(
                         style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                          //backgroundColor: MaterialStateProperty.all<Color>(primary)
                         ),
-                        onPressed: () { },
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> RegisterScreen()));
+                        },
                         child: const Text('LOS GEHTS!'),
                       )
                   ),
