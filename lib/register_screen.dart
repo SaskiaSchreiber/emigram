@@ -38,36 +38,46 @@ class _HomeState extends State<Home>{
                       ),
                       Column(
                           children: const [
-                            TextField(
+                            SizedBox(
+                                width: 390,
+                                child: TextField(
                               obscureText: false,
                               decoration: InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'E-mail Adresse')
-                              ),
+                              )),
                             SizedBox(height: 10),
-                            TextField(
+                            SizedBox(
+                                width: 390,
+                                child: TextField(
                                 obscureText: false,
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: 'Vorname')),
+                                    labelText: 'Vorname'))),
                             SizedBox(height: 10),
-                            TextField(
+                            SizedBox(
+                                width: 390,
+                                child: TextField(
                                 obscureText: false,
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: 'Nachname')),
+                                    labelText: 'Nachname'))),
                             SizedBox(height: 10),
-                            TextField(
+                            SizedBox(
+                                width: 390,
+                                child: TextField(
                                 obscureText: true,
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: 'Passwort')),
+                                    labelText: 'Passwort'))),
                             SizedBox(height: 10),
-                            TextField(
+                            SizedBox(
+                                width: 390,
+                                child: TextField(
                                 obscureText: true,
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
-                                    labelText: 'Passwort bestätigen')),
+                                    labelText: 'Passwort bestätigen'))),
                           ]),
                       const SizedBox(height: 40),
                       Container(

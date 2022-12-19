@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:emigram/home_Screen.dart';
 
 const primary = Color(0xFF1EC969);
 const accent = Color(0xFFE5FFE7);
@@ -139,7 +140,7 @@ class _HomeState extends State<Home>{
                       foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
                     ),
                     onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> ));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
                     },
                     child: const Text('WEITER'),
                   )
@@ -150,7 +151,7 @@ class _HomeState extends State<Home>{
                         foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
                     ),
                     onPressed: () {
-                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> ));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
                     },
                     child: const Text('Später vielleicht...'),
                   )

@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:emigram/pw_forget_screen.dart';
-import 'package:emigram/home_Screen.dart';
+import 'package:emigram/login_screen.dart';
 
 const primary = Color(0xFF1EC969);
 const accent = Color(0xFFE5FFE7);
 
-class LoginScreen extends StatelessWidget{
-  const LoginScreen({super.key});
+class PwForgetScreen extends StatelessWidget{
+  const PwForgetScreen({super.key});
 
   @override
   Widget build(BuildContext context){
@@ -21,7 +20,7 @@ class _HomeState extends State<Home>{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
+        title: const Text("Passwort vergessen"),
         automaticallyImplyLeading: true,
       ),
       body: content(),
@@ -35,26 +34,19 @@ class _HomeState extends State<Home>{
               Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(10, 160.0,0, 40.0),
-                  child: const Text('Emigram', style: TextStyle(color: primary,fontSize: 50))
+                  child: const Text('Du hast dein Passwort vergessen?\n'
+                      'Kein Problem! Gib deine E-Mail Adresse an und wir schicken dir eine E-Mail zum zurücksetzen deines Passworts.', style: TextStyle(color: primary,fontSize: 24))
               ),
               Column(
                   children: const [
                     SizedBox(
-                        width: 390,
-                        child: TextField(
+                      width: 390,
+                      child: TextField(
                         obscureText: false,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'E-mail Adresse')
-                    )),
-                    SizedBox(height: 10),
-                    SizedBox(
-                        width: 390,
-                        child: TextField(
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Passwort'))),
+                    ),)
                   ]),
               const SizedBox(height: 40),
               Container(
@@ -72,10 +64,9 @@ class _HomeState extends State<Home>{
                       foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
                     ),
                     onPressed: () {
-                      //überprüfung der login daten
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen() ));
                     },
-                    child: const Text('LOGIN'),
+                    child: const Text('BESTÄTIGEN'),
                   )
               ),
               Container(
@@ -84,9 +75,9 @@ class _HomeState extends State<Home>{
                         foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> PwForgetScreen()));
+                      //push benachrichtigung einfügen;
                     },
-                    child: const Text('PASSWORT VERGESSEN?'),
+                    child: const Text('Keine E-Mail erhalten?'),
                   )
               )
             ]
