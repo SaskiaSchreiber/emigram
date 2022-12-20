@@ -33,7 +33,7 @@ class _HomeState extends State<Home>{
                     children: [
                       Container(
                           alignment: Alignment.centerLeft,
-                          padding: const EdgeInsets.fromLTRB(10, 160.0,0, 40.0),
+                          padding: const EdgeInsets.fromLTRB(10, 10,0, 10.0),
                           child: const Text('Emigram', style: TextStyle(color: primary,fontSize: 50))
                       ),
                       Column(
@@ -46,7 +46,7 @@ class _HomeState extends State<Home>{
                                 border: OutlineInputBorder(),
                                 labelText: 'E-mail Adresse')
                               )),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             SizedBox(
                                 width: 390,
                                 child: TextField(
@@ -54,7 +54,7 @@ class _HomeState extends State<Home>{
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: 'Vorname'))),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             SizedBox(
                                 width: 390,
                                 child: TextField(
@@ -62,7 +62,7 @@ class _HomeState extends State<Home>{
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: 'Nachname'))),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             SizedBox(
                                 width: 390,
                                 child: TextField(
@@ -70,7 +70,7 @@ class _HomeState extends State<Home>{
                                 decoration: InputDecoration(
                                     border: OutlineInputBorder(),
                                     labelText: 'Passwort'))),
-                            SizedBox(height: 10),
+                            SizedBox(height: 5),
                             SizedBox(
                                 width: 390,
                                 child: TextField(
@@ -79,7 +79,7 @@ class _HomeState extends State<Home>{
                                     border: OutlineInputBorder(),
                                     labelText: 'Passwort bestätigen'))),
                           ]),
-                      const SizedBox(height: 40),
+                      const SizedBox(height: 20),
                       Container(
                           width: 320.0,
                           height: 40.0,

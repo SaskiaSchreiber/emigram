@@ -8,7 +8,7 @@ const accent = const Color(0xFFE5FFE7);
 
 void main() {
   runApp(MaterialApp(
-    title: 'Testing stuff',
+    title: 'Emigram',
     theme: ThemeData(
       appBarTheme: const AppBarTheme(
         backgroundColor: primary,
@@ -76,7 +76,6 @@ class MyApp extends StatelessWidget {
                       )
                   )
                 ]
-
             )
         )
     );
