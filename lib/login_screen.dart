@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:emigram/pw_forget_screen.dart';
 import 'package:emigram/home_Screen.dart';
@@ -9,14 +10,35 @@ class LoginScreen extends StatelessWidget{
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context){
-    return const Scaffold(
-        body:Home()
+  Widget build(BuildContext context)=>//{
+     Scaffold(
+        body:StreamBuilder<User?>( // Checkt, ob der User immer eingeloggt ist
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot){
+            if (snapshot.hasData){
+              return  const HomeScreen(); // Ja : Home Screen
+            }else{
+              return const Home(); // Nein: Login Screen
+            }
+          }
+        )
     );
-  }
+  //}
 }
 
 class _HomeState extends State<Home>{
+
+  //Texfied Controller
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  // dispose überschreiben
+  @override
+  void dispose(){
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context){
     return Scaffold(
@@ -38,10 +60,11 @@ class _HomeState extends State<Home>{
                   child: const Text('Emigram', style: TextStyle(color: primary,fontSize: 50))
               ),
               Column(
-                  children: const [
+                  children:  [
                     SizedBox(
                         width: 390,
                         child: TextField(
+                            controller: emailController, // controller hinzugefügt
                         obscureText: false,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -51,6 +74,7 @@ class _HomeState extends State<Home>{
                     SizedBox(
                         width: 390,
                         child: TextField(
+                          controller: passwordController, // controller hinzugefügt
                         obscureText: true,
                         decoration: InputDecoration(
                             border: OutlineInputBorder(),
@@ -71,9 +95,10 @@ class _HomeState extends State<Home>{
                     style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
                     ),
-                    onPressed: () {
+                    onPressed: () async{
                       //überprüfung der login daten
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+                      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
+                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
                     },
                     child: const Text('LOGIN'),
                   )

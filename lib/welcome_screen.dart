@@ -2,11 +2,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:emigram/register_screen.dart';
 import 'package:emigram/login_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 const primary = const Color(0xFF1EC969);
 const accent = const Color(0xFFE5FFE7);
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MaterialApp(
     title: 'Emigram',
     theme: ThemeData(

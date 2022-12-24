@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="welcome_screen" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="additionalArgs" value="--no-sound-null-safety" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/welcome_screen.dart" />
+    <method v="2" />
+  </configuration>
+</component>

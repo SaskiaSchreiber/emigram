@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "353687509089",
+    "firebase_url": "https://emigram-fc77c-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "emigram-fc77c",
+    "storage_bucket": "emigram-fc77c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353687509089:android:f217f98c3bb1a0c2b23220",
+        "android_client_info": {
+          "package_name": "com.example.emigram"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353687509089-fg1el6ifo0srun1dmr3f1gn0bnajjl78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZ5mQN3rBpLXCREi8c4o30WRRXd4AiTek"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "353687509089-fg1el6ifo0srun1dmr3f1gn0bnajjl78.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

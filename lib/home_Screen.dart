@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 const primary = Color(0xFF1EC969);
@@ -18,6 +19,7 @@ class HomeScreen extends StatelessWidget{
 class _HomeState extends State<Home>{
   @override
   Widget build(BuildContext context){
+    final user= FirebaseAuth.instance.currentUser!;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
@@ -40,11 +42,11 @@ class _HomeState extends State<Home>{
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
+             DrawerHeader(
               decoration: BoxDecoration(
                 color: primary,
               ),
-              child: Text('Max Mustermann'),
+              child: Text(user.email!)//Text('Max Mustermann'), // User-spezifische Email(später mit Nach und Vorname)
             ),
             ListTile(
               title: const Text('Konto bearbeiten'),
@@ -67,7 +69,8 @@ class _HomeState extends State<Home>{
             ListTile(
               title: const Text('Logout'),
               onTap: () {
-                Navigator.popUntil(context, (Route<dynamic> predicate) => predicate.isFirst);
+                FirebaseAuth.instance.signOut();
+                //Navigator.popUntil(context, (Route<dynamic> predicate) => predicate.isFirst);
               },
             ),
           ],
