@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:emigram/register_screen.dart';
 import 'package:emigram/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:emigram/geolocation.dart';
 
 const primary = const Color(0xFF1EC969);
 const accent = const Color(0xFFE5FFE7);
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
             child: Column(
                 children: [
                   Container(
-                      padding: EdgeInsets.fromLTRB(40.0, 80.0, 40.0, 160.0),
+                      padding: EdgeInsets.fromLTRB(40.0, 40.0, 40.0, 40.0),
                       child: const Text.rich(
                           TextSpan(text:'Hi.\n \n', style: TextStyle(color: primary,fontSize: 64),
                               children: <TextSpan>[
@@ -76,6 +77,17 @@ class MyApp extends StatelessWidget {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
                         },
                         child: const Text('LOGIN'),
+                      )
+                  ),
+                  Container(
+                      child: TextButton(
+                        style: ButtonStyle(
+                            foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
+                        ),
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> Geolocation()));
+                        },
+                        child: const Text('Current Location'),
                       )
                   )
                 ]
