@@ -62,43 +62,39 @@ class _HomeState extends State<Home>{
           children: [
              DrawerHeader(
               decoration: const BoxDecoration(
-                color: primary,
+                //color: primary,
+                //image: new DecorationImage(image: new AssetImage('assets/emigramLogowashed.png')),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors:  <Color>[accent,primary]
+                )
               ),
               child: Text(user.email!)//Text('Max Mustermann'), // User-spezifische Email(später mit Nach und Vorname)
             ),
-            ListTile(
-              title: const Text('Konto bearbeiten'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Mobilitätsprofil anpassen'),
-              onTap: () {
-                showHide1();
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Konsumprofil anpassen'),
-              onTap: () {
-                showHide2();
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Farbschema anpassen'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: const Text('Logout'),
-              onTap: () {
-                FirebaseAuth.instance.signOut();
-                //Navigator.popUntil(context, (Route<dynamic> predicate) => predicate.isFirst);
-              },
-            ),
+
+            CustomListTile(Icons.edit, 'Konto bearbeiten', () {
+              Navigator.pop(context);
+            }),
+
+            CustomListTile(Icons.car_rental, 'Mobilitätsprofil anpassen', () {
+              showHide1();
+              Navigator.pop(context);
+            }),
+
+            CustomListTile(Icons.fastfood, 'Konsumprofil anpassen', () {
+              showHide2();
+              Navigator.pop(context);
+            }),
+
+            CustomListTile(Icons.colorize, 'Farbschema anpassen', () {
+            Navigator.pop(context);
+            }),
+
+            CustomListTile(Icons.lock, 'Logout', () {
+            FirebaseAuth.instance.signOut();
+            //Navigator.popUntil(context, (Route<dynamic> predicate) => predicate.isFirst);
+            }),
           ],
         ),
       ),
@@ -189,3 +185,45 @@ class Home extends StatefulWidget{
   State<Home> createState() => _HomeState();
 }
 
+class CustomListTile extends StatelessWidget{
+
+  IconData icon;
+  String text;
+  VoidCallback onTap;
+
+  CustomListTile(this.icon,this.text,this.onTap);
+  @override
+  Widget build(BuildContext context){
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+      child: Container(
+        decoration: BoxDecoration(
+          border: Border(bottom: BorderSide(color: Colors.grey.shade400))
+        ),
+        child: InkWell(
+          splashColor: primary,
+          onTap: onTap,
+          child: Container(
+            height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(icon),
+                        Padding(
+                            padding:EdgeInsets.all(8),
+                            child: Text(text,style: TextStyle(
+                              fontSize: 16
+                        ),),)
+                      ],
+                    ),
+                    Icon(Icons.arrow_right)
+                  ],
+              ),
+          ),
+        ),
+      ),
+    );
+  }
+}
