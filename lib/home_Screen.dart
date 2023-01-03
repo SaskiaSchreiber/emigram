@@ -110,7 +110,9 @@ class _HomeState extends State<Home>{
       body: Center(
         child: Column(
             children: [
-              const SizedBox(height: 20),
+              Visibility(
+                  visible: _isVisible2,
+                  child: const SizedBox(height: 20)),
               Visibility(
                 visible: _isVisible2,
                 child: Container(
@@ -134,7 +136,9 @@ class _HomeState extends State<Home>{
                     child: const Text('Plaid aktivieren'),
                   )
               ),),
-              const SizedBox(height: 20),
+              Visibility(
+                  visible: _isVisible1,
+                  child: const SizedBox(height: 20)),
               Visibility(
                 visible: _isVisible1,
                 child: Container(
