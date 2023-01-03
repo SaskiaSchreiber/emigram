@@ -89,7 +89,7 @@ class MyApp extends StatelessWidget {
                         },
                         child: const Text('Current Location'),
                       )
-                  )
+                  ),
                 ]
             )
         )
