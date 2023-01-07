@@ -1,6 +1,8 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' show cos, sqrt, asin;
+import 'dart:async';
 
 const primary = Color(0xFF1EC969);
 const accent = Color(0xFFE5FFE7);
@@ -19,6 +21,9 @@ class Geolocation extends StatefulWidget {
 }
 
 class _GeolocationState extends State<Geolocation> {
+  var _distance = 0.0;
+  var _starttime = 0;
+  var _speed = 0.0;
   Position _currentPosition = Position(
       longitude: 0,
       latitude: 0,
@@ -43,10 +48,13 @@ class _GeolocationState extends State<Geolocation> {
             if (_currentPosition != null)
               Text(
                   "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"),
+            Text("Distanz (m): ${_distance.round()}"),
+            Text("Geschwindigkeit (m/s): ${_speed.round()}"),
+            Text("Geschwindigkeit (km/h): ${(_speed * 3.6).round()}"),
             TextButton(
-              child: Text("Get location"),
+              child: Text("Start"),
               onPressed: () {
-                _getCurrentLocation();
+                _trackPosition();
               },
             ),
           ],
@@ -102,21 +110,43 @@ class _GeolocationState extends State<Geolocation> {
     );
   }
 
-  _getCurrentLocation() async {
+  _trackPosition() async {
     LocationPermission permission;
     permission = await Geolocator.checkPermission();
     permission = await Geolocator.requestPermission();
     if (permission != LocationPermission.denied) {
-      Geolocator.getCurrentPosition(
-              desiredAccuracy: LocationAccuracy.best,
-              forceAndroidLocationManager: true)
-          .then((Position position) {
-        setState(() {
-          _currentPosition = position;
+      while (true) {
+        Geolocator.getCurrentPosition(
+                desiredAccuracy: LocationAccuracy.best,
+                forceAndroidLocationManager: true)
+            .then((Position newPosition) {
+          setState(() {
+            if (_currentPosition.latitude != 0 ||
+                _currentPosition.longitude != 0) {
+              var distance = Geolocator.distanceBetween(
+                  _currentPosition.latitude,
+                  _currentPosition.longitude,
+                  newPosition.latitude,
+                  newPosition.longitude
+              );
+              if (distance > 20) {
+                _distance += distance;
+                _speed = _distance /
+                    ((DateTime.now().millisecondsSinceEpoch - _starttime) /
+                        1000.0);
+                _currentPosition = newPosition;
+              }
+            } else {
+              _starttime = DateTime.now().millisecondsSinceEpoch;
+              _currentPosition = newPosition;
+            }
+          });
+        }).catchError((e) {
+          print(e);
         });
-      }).catchError((e) {
-        print(e);
-      });
+        await Future.delayed(Duration(seconds: 3));
+      }
     }
   }
+
 }
