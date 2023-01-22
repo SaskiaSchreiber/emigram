@@ -9,7 +9,6 @@ import 'package:emigram/qlimatiq.dart';
 const primary = const Color(0xFF1EC969);
 const accent = const Color(0xFFE5FFE7);
 
-
 Future<void> main() async {
   requestQlimatiqData();
   WidgetsFlutterBinding.ensureInitialized();
