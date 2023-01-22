@@ -4,11 +4,13 @@ import 'package:emigram/register_screen.dart';
 import 'package:emigram/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:emigram/geolocation.dart';
+import 'package:emigram/qlimatiq.dart';
 
 const primary = const Color(0xFF1EC969);
 const accent = const Color(0xFFE5FFE7);
 
 Future<void> main() async {
+  requestQlimatiqData();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MaterialApp(
