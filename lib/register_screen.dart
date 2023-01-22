@@ -128,12 +128,13 @@ class _HomeState extends State<Home>{
                                         password: pwdbController.text.trim()
                                     ).then((value) async {
                                         User? newUser = FirebaseAuth.instance.currentUser;
-                                        final database = FirebaseDatabase.instance.reference();
+                                        final database = FirebaseDatabase.instance.ref();
                                         final userRef = database.child("User/${newUser?.uid}");
                                         userRef.set({"email":emailController.text.trim(),
                                                         "vorname":vornameController.text.trim(),
                                                         "nachname":nachnameController.text.trim()
                                                         });
+
                                       });
 
 
