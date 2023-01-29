@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:emigram/register_screen.dart';
 import 'package:emigram/login_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:emigram/geolocation.dart';
 import 'package:emigram/qlimatiq.dart';
 
 const primary = const Color(0xFF1EC969);
@@ -79,17 +78,6 @@ class MyApp extends StatelessWidget {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
                         },
                         child: const Text('LOGIN'),
-                      )
-                  ),
-                  Container(
-                      child: TextButton(
-                        style: ButtonStyle(
-                            foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
-                        ),
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context)=> Geolocation()));
-                        },
-                        child: const Text('Current Location'),
                       )
                   ),
                 ]

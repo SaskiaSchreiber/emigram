@@ -1,8 +1,12 @@
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'dart:collection';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/services.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:intl/intl.dart';
 
 const primary = Color(0xFF1EC969);
 const accent = Color(0xFFE5FFE7);
@@ -11,22 +15,25 @@ const benzinFactor = 23.8;
 const dieselFactor = 26.5;
 final scaffoldKey = GlobalKey<ScaffoldState>();
 
-class Geolocation extends StatefulWidget {
-  const Geolocation({super.key});
+class EmissionTrackingScreen extends StatefulWidget {
+  const EmissionTrackingScreen({super.key});
 
-  @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Geolocation());
+    return const Scaffold(body: EmissionTrackingScreen());
   }
 
   @override
-  State<StatefulWidget> createState() => _GeolocationState();
+  State<StatefulWidget> createState() => _EmissionTrackingScreenState();
 }
 
-class _GeolocationState extends State<Geolocation> {
+class _EmissionTrackingScreenState extends State<EmissionTrackingScreen> {
+  // accumulated distance since last reset
   var _distance = 0.0;
+
+  // time of most recent position record
   var _time = 0;
   var _speed = 0.0;
+  var _monthlyEmissions = 0.0;
   var _run = false;
   var _relConsumption = 8.0;
   var _fuelType = "Benzin";
@@ -45,11 +52,19 @@ class _GeolocationState extends State<Geolocation> {
   @override
   void initState() {
     super.initState();
-    _loadParameters();
+    _loadLocalParameters();
+    _loadParametersFromDatabase();
   }
 
-  //Loading counter value on start
-  Future<void> _loadParameters() async {
+  _storeLocalParameters() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('distance', _distance);
+    await prefs.setDouble('relConsumption', _relConsumption);
+    await prefs.setString('fuelType', _fuelType);
+    await prefs.setDouble('co2Factor', _co2Factor);
+  }
+
+  _loadLocalParameters() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
       _distance = prefs.getDouble('distance') ?? 0;
@@ -59,47 +74,47 @@ class _GeolocationState extends State<Geolocation> {
     });
   }
 
+  _storeParametersInDatabase() async {
+    final month = DateTime.now().month;
+    Map<String, double> emissions = HashMap();
+    setState(() {
+      _monthlyEmissions += _getEmissionsSinceLastReset();
+    });
+    emissions.putIfAbsent(month.toString(), () => 0);
+    emissions.update(month.toString(), (d) => _monthlyEmissions);
+    _getDatabaseReference().update(emissions);
+  }
+
+  _loadParametersFromDatabase() async {
+    DataSnapshot dataSnapshot = (await _getDatabaseReference().once()).snapshot;
+    final month = DateTime.now().month;
+    DataSnapshot child = dataSnapshot.child(month.toString());
+    setState(() {
+      _monthlyEmissions = double.parse(child.value.toString());
+    });
+  }
+
+  DatabaseReference _getDatabaseReference() {
+    User? user = FirebaseAuth.instance.currentUser;
+    DatabaseReference ref = FirebaseDatabase.instance.ref();
+    return ref.child("MonthlyEmissions/${user?.uid}");
+  }
+
   @override
   Widget build(BuildContext context) {
-    //final user= FirebaseAuth.instance.currentUser!;
+    final DateFormat formatter = DateFormat('MMMM');
+    final String monthName = formatter.format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
-        title: Text("Location"),
+        title: const Text("Location"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            if (_currentPosition != null)
-              Text(
-                  "LAT: ${_currentPosition.latitude}, LNG: ${_currentPosition.longitude}"),
-            Text("Geschwindigkeit (km/h): ${(_speed * 3.6).round()}"),
-            Text("Distanz (m): ${_distance.round()}"),
-            Text(
-                "Gesamtverbrauch (l): ${(_distance * _relConsumption / 100000.0)}"),
-            Text(
-                "CO2-Emissionen (g): ${(_co2Factor * _distance * _relConsumption / 100000.0)}"),
-            TextButton(
-              child: Text("Start"),
-              onPressed: () {
-                _trackPosition();
-              },
-            ),
-            TextButton(
-              child: Text("Stop"),
-              onPressed: () {
-                _stop();
-              },
-            ),
-            TextButton(
-              child: Text("Reset"),
-              onPressed: () {
-                _reset();
-              },
-            ),
             Container(
               alignment: Alignment.centerLeft,
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 20.0),
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
               child: const Text(
                   'Durchschnittlicher Verbrauch des genutzten PKW [l/100km]'),
             ),
@@ -116,8 +131,7 @@ class _GeolocationState extends State<Geolocation> {
                 // This is called when the user selects an item.
                 setState(() {
                   _fuelType = value!;
-                  _co2Factor =
-                      _fuelType == "Benzin" ? benzinFactor : dieselFactor;
+                  _fuelType == "Benzin" ? benzinFactor : dieselFactor;
                 });
               },
               items: list.map<DropdownMenuItem<String>>((String value) {
@@ -127,18 +141,47 @@ class _GeolocationState extends State<Geolocation> {
                 );
               }).toList(),
             ),
-            TextFormField(
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-              ),
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              onChanged: (text) {
-                _relConsumption = double.parse(text);
+            SizedBox(
+                width: 70.0,
+                child: TextFormField(
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                  ),
+                  initialValue: _relConsumption.toString(),
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                  onChanged: (text) {
+                    _relConsumption = double.parse(text);
+                  },
+                )),
+            const SizedBox(height: 50),
+            Text(
+                "Position: ${_currentPosition.latitude.toStringAsFixed(5)} °N, ${_currentPosition.longitude.toStringAsFixed(5)} °O"),
+            Text("Geschwindigkeit (km/h): ${(_speed * 3.6).round()}"),
+            Text("Distanz (m): ${_distance.round()}"),
+            Text("Gesamtverbrauch (l): ${(_getConsumptionSinceLastReset())}"),
+            Text("CO2-Emissionen (g): ${(_getEmissionsSinceLastReset())}"),
+            TextButton(
+              child: Text(_run ? "Stop recording" : "Start recoding"),
+              onPressed: () {
+                setState(() {
+                  _run = !_run;
+                });
+                if (_run) {
+                  _trackPosition();
+                }
               },
             ),
+            TextButton(
+              child: const Text("Store and reset"),
+              onPressed: () {
+                _reset();
+              },
+            ),
+            Text(
+                "CO2-Emissionen in ${(monthName)} (kg): ${((_monthlyEmissions / 1000).toStringAsPrecision(2))}"),
           ],
         ),
       ),
@@ -146,7 +189,6 @@ class _GeolocationState extends State<Geolocation> {
   }
 
   _trackPosition() async {
-    _run = true;
     final prefs = await SharedPreferences.getInstance();
     _distance = prefs.getDouble('distance') ?? 0;
     LocationPermission permission;
@@ -185,19 +227,10 @@ class _GeolocationState extends State<Geolocation> {
         }).catchError((e) {
           print(e);
         });
-        await prefs.setDouble('distance', _distance);
-        await prefs.setDouble('relConsumption', _relConsumption);
-        await prefs.setString('fuelType', _fuelType);
-        await prefs.setDouble('co2Factor', _co2Factor);
-        await Future.delayed(Duration(seconds: 3));
+        _storeLocalParameters();
+        await Future.delayed(const Duration(seconds: 3));
       }
     }
-  }
-
-  _stop() async {
-    setState(() {
-      _run = false;
-    });
   }
 
   _reset() async {
@@ -206,5 +239,14 @@ class _GeolocationState extends State<Geolocation> {
     setState(() {
       _distance = 0;
     });
+    _storeParametersInDatabase();
+  }
+
+  double _getConsumptionSinceLastReset() {
+    return _distance * _relConsumption / 100000.0;
+  }
+
+  double _getEmissionsSinceLastReset() {
+    return _getConsumptionSinceLastReset() * _co2Factor;
   }
 }
