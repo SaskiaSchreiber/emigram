@@ -195,6 +195,7 @@ class _EmissionTrackingScreenState extends State<EmissionTrackingScreen> {
     permission = await Geolocator.checkPermission();
     permission = await Geolocator.requestPermission();
     if (permission != LocationPermission.denied) {
+      // run as long as stop isn't pressed
       while (_run == true) {
         Geolocator.getCurrentPosition(
                 desiredAccuracy: LocationAccuracy.best,
@@ -208,9 +209,11 @@ class _EmissionTrackingScreenState extends State<EmissionTrackingScreen> {
                   _currentPosition.longitude,
                   newPosition.latitude,
                   newPosition.longitude);
+              // to suppress gps noise, wait for distance > 20m
               if (distance > 20) {
                 var speed = distance /
                     ((DateTime.now().millisecondsSinceEpoch - _time) / 1000.0);
+                // update speed and distance only if speed exceeds 25km/h
                 if (speed * 3.6 > 25) {
                   _distance += distance;
                   _speed = speed;
