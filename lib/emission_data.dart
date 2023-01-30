@@ -11,7 +11,7 @@ class EmissionData {
 }
 
 List<EmissionData> get emissionData  {
-  //var data = <double>[2,4,6,11,3,6,4];
+  //final data1 = <double>[2,4,6,11,3,6,4];
   final data1 = <double>[];
   final f_daten={};
   User? newUser = FirebaseAuth.instance.currentUser;

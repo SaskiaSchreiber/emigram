@@ -72,11 +72,11 @@ class _HomeState extends State<Home> {
               Navigator.pop(context);
             }),
             CustomListTile(Icons.car_rental, 'Mobilitätsprofil anpassen', () {
-              showHide1();
+              //showHide1();
               Navigator.pop(context);
             }),
             CustomListTile(Icons.fastfood, 'Konsumprofil anpassen', () {
-              showHide2();
+              //showHide2();
               Navigator.pop(context);
             }),
             CustomListTile(Icons.car_rental, 'Emissionen aufzeichnen', () {
@@ -102,7 +102,7 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: Center(
         child: Column(children: [
-          Visibility(visible: _isVisible2, child: const SizedBox(height: 20)),
+          /*Visibility(visible: _isVisible2, child: const SizedBox(height: 20)),
           Visibility(
             visible: _isVisible2,
             child: Container(
@@ -147,7 +147,7 @@ class _HomeState extends State<Home> {
                   },
                   child: const Text('Googlemaps aktivieren'),
                 )),
-          ),
+          ),*/
           Column(
             children: [
               const SizedBox(height: 40),
@@ -155,11 +155,13 @@ class _HomeState extends State<Home> {
                   style: TextStyle(color: primary, fontSize: 24)),
               const SizedBox(height: 10),
               LineChartWidget(emissionData),
+              //LineChartWidget(mock_emi_data),
               const SizedBox(height: 40),
               const Text('Deine Emissionen letztes Jahr',
                   style: TextStyle(color: primary, fontSize: 24)),
               const SizedBox(height: 10),
               LineChartWidget(emissionData),
+              //LineChartWidget(mock_emi_data)),
             ],
           ),
         ]),

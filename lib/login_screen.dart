@@ -56,7 +56,7 @@ class _HomeState extends State<Home>{
             children: [
               Container(
                   alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(10, 100.0,0, 40.0),
+                  padding: const EdgeInsets.fromLTRB(10, 40.0,0, 40.0),
                   child: const Text('Emigram', style: TextStyle(color: primary,fontSize: 50))
               ),
               Column(
