@@ -39,7 +39,10 @@ class MyApp extends StatelessWidget {
                               children: <TextSpan>[
                                 TextSpan(text: 'Willkommen bei Emigram. Hier kannst du deine täglichen CO2 '
                                     'Emissionen errechnen lassen und bekommst so einen Einblick wie sich dein Verhalten '
-                                    'auf deinen CO2-Fußabdruck auswirkt.', style: TextStyle(color: primary,fontSize: 24),
+                                    'auf deinen CO2-Fußabdruck auswirkt.',
+                                        style: TextStyle(
+                                                color: primary,
+                                                fontSize: 24),
                                 )
                               ]
                           )
@@ -65,9 +68,10 @@ class MyApp extends StatelessWidget {
                         child: const Text('LOS GEHTS!'),
                       )
                   ),
+                  const SizedBox(height: 30),
                   Container(
                       padding: const EdgeInsets.fromLTRB(0, 10,0, 0),
-                      child: const Text('BEREITS REGISTRIERT?', style: TextStyle(color: Colors.black,fontSize: 15))
+                      child: const Text('BEREITS REGISTRIERT?', style: TextStyle(color: Colors.black,fontSize: 13))
                   ),
                   Container(
                       child: TextButton(
@@ -77,7 +81,11 @@ class MyApp extends StatelessWidget {
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(builder: (context)=> LoginScreen()));
                         },
-                        child: const Text('LOGIN'),
+                        child: const Text('LOGIN',
+                                          style: TextStyle(
+                                                  decoration: TextDecoration.underline,
+                                                  fontSize: 17)
+                          ,),
                       )
                   ),
                 ]

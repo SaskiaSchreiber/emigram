@@ -1,7 +1,9 @@
 import 'package:emigram/emission_data.dart';
+import 'package:emigram/mock_data.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'line_chart.dart';
+import 'line_chart_dummy.dart';
 import "emission_tracking_screen.dart";
 
 const primary = Color(0xFF1EC969);
@@ -18,20 +20,6 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool _isVisible1 = true;
-  bool _isVisible2 = true;
-
-  void showHide1() {
-    setState(() {
-      _isVisible1 = !_isVisible1;
-    });
-  }
-
-  void showHide2() {
-    setState(() {
-      _isVisible2 = !_isVisible2;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,8 +47,6 @@ class _HomeState extends State<Home> {
           children: [
             DrawerHeader(
                 decoration: const BoxDecoration(
-                    //color: primary,
-                    //image: new DecorationImage(image: new AssetImage('assets/emigramLogowashed.png')),
                     gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -100,73 +86,41 @@ class _HomeState extends State<Home> {
 
   Widget content() {
     return Scaffold(
-      body: Center(
-        child: Column(children: [
-          /*Visibility(visible: _isVisible2, child: const SizedBox(height: 20)),
-          Visibility(
-            visible: _isVisible2,
-            child: Container(
-                width: 320.0,
-                height: 40.0,
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: <Color>[accent, primary])),
-                child: TextButton(
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
-                  ),
-                  onPressed: () {
-                    showHide2();
-                    //Navigator.push(context, MaterialPageRoute(builder: (context)=> ));
-                  },
-                  child: const Text('Plaid aktivieren'),
-                )),
-          ),
-          Visibility(visible: _isVisible1, child: const SizedBox(height: 20)),
-          Visibility(
-            visible: _isVisible1,
-            child: Container(
-                width: 320.0,
-                height: 40.0,
-                decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: <Color>[accent, primary])),
-                child: TextButton(
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.black),
-                  ),
-                  onPressed: () {
-                    showHide1();
-                    //Navigator.push(context, MaterialPageRoute(builder: (context)=> ));
-                  },
-                  child: const Text('Googlemaps aktivieren'),
-                )),
-          ),*/
-          Column(
-            children: [
-              const SizedBox(height: 40),
-              const Text('Deine Emissionen letzten Monat',
-                  style: TextStyle(color: primary, fontSize: 24)),
-              const SizedBox(height: 10),
-              LineChartWidget(emissionData),
-              //LineChartWidget(mock_emi_data),
-              const SizedBox(height: 40),
-              const Text('Deine Emissionen letztes Jahr',
-                  style: TextStyle(color: primary, fontSize: 24)),
-              const SizedBox(height: 10),
-              LineChartWidget(emissionData),
-              //LineChartWidget(mock_emi_data)),
-            ],
-          ),
+      body: ListView(
+          padding: const EdgeInsets.all(15),
+          children: <Widget>[
+            const Text.rich(
+                TextSpan(text:'So gehts:\n \n', style: TextStyle(color: primary,fontSize: 24),
+                    children: <TextSpan>[
+                      TextSpan(text: 'Wenn du mit dem Auto unterwegs bist, starte den Emissionentracker um '
+                          'deinen Verbrauch von Emigram errechnen zulassen. Klicke dazu im Menü (Personicon '
+                          'oben links in der Ecke) auf "Emissionen aufzeichnen"',
+                        style: TextStyle(
+                            color: primary,
+                            fontSize: 18),
+                      )
+                    ]
+                )
+            ),
+            Column(
+              children: [
+                const SizedBox(height: 40),
+                const Text('Deine Emissionen letzten Monat',
+                    style: TextStyle(color: primary, fontSize: 24)),
+                const SizedBox(height: 10),
+                LineChartWidget(emissionData),
+                const SizedBox(height: 40),
+                const Text('Deine Emissionen letztes Jahr',
+                    style: TextStyle(color: primary, fontSize: 24)),
+                const SizedBox(height: 10),
+                Padding (
+                    padding: EdgeInsets.all(4.0),
+                    child: LineChartWidgetDummy(mockData)
+                )
+              ],
+            ),
         ]),
-      ),
-    );
+      );
   }
 }
 
@@ -220,3 +174,4 @@ class CustomListTile extends StatelessWidget {
     );
   }
 }
+

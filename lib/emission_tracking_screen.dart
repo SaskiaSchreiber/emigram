@@ -106,7 +106,7 @@ class _EmissionTrackingScreenState extends State<EmissionTrackingScreen> {
     final String monthName = formatter.format(DateTime.now());
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Location"),
+        title: const Text("Emissionen aufzeichnen"),
       ),
       body: Center(
         child: Column(

@@ -11,7 +11,6 @@ class EmissionData {
 }
 
 List<EmissionData> get emissionData  {
-  //final data1 = <double>[2,4,6,11,3,6,4];
   final data1 = <double>[];
   final f_daten={};
   User? newUser = FirebaseAuth.instance.currentUser;
@@ -36,9 +35,6 @@ List<EmissionData> get emissionData  {
       print("no data");
     }
   });
-  print("Hi");
-  print(data1);
-  print("hello");
 
   //f_daten;
   return data1
@@ -46,3 +42,12 @@ List<EmissionData> get emissionData  {
       ((index, element)=> EmissionData(x: index.toDouble(), y: element)))
       .toList();
 }
+
+List<EmissionData> get yearDummy  {
+  final data2 = <double>[2,4,6,11,3,6,4];
+  print(data2);
+  return data2
+      .mapIndexed(
+      ((index, element)=> EmissionData(x: index.toDouble(), y: element)))
+      .toList();
+  }

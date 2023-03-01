@@ -23,7 +23,6 @@ Future<List<FlSpot>> _getData() async {
       var mobMap = daten[dat] as Map<dynamic, dynamic>;
       double sum=0;
       for(var mob in mobMap.keys){
-        //print(d[elt]);
         sum= sum + mobMap[mob];
       }
 
@@ -55,13 +54,13 @@ class LineChartWidget extends StatelessWidget {
         builder:(context, snapshot){
           if(snapshot.hasData){
            return AspectRatio(
-              aspectRatio: 2,
+              aspectRatio: 1.5,
               child: LineChart(
                 LineChartData(
                     titlesData: FlTitlesData(
-                      leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
+                      leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: true,reservedSize: 30)),
                       rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true)),
+                      bottomTitles: AxisTitles(sideTitles: SideTitles(showTitles: true,reservedSize: 30)),
                       topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
                     ),
                     backgroundColor: Colors.black12,

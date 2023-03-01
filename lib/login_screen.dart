@@ -10,8 +10,8 @@ class LoginScreen extends StatelessWidget{
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context)=>//{
-     Scaffold(
+  Widget build(BuildContext context)=>
+      Scaffold(
         body:StreamBuilder<User?>( // Checkt, ob der User immer eingeloggt ist
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot){
@@ -23,7 +23,6 @@ class LoginScreen extends StatelessWidget{
           }
         )
     );
-  //}
 }
 
 class _HomeState extends State<Home>{
@@ -51,72 +50,75 @@ class _HomeState extends State<Home>{
   }
   Widget content() {
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-            children: [
-              Container(
+      body: ListView(
+          children: <Widget>[
+            Container(
+              child: Column(
+              children: [
+                  Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(10, 40.0,0, 40.0),
                   child: const Text('Emigram', style: TextStyle(color: primary,fontSize: 50))
               ),
-              Column(
-                  children:  [
-                    SizedBox(
-                        width: 390,
-                        child: TextField(
-                            controller: emailController, // controller hinzugefügt
-                        obscureText: false,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'E-mail Adresse')
-                    )),
-                    SizedBox(height: 10),
-                    SizedBox(
-                        width: 390,
-                        child: TextField(
-                          controller: passwordController, // controller hinzugefügt
-                        obscureText: true,
-                        decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Passwort'))),
-                  ]),
-              const SizedBox(height: 40),
-              Container(
-                  width: 320.0,
-                  height: 40.0,
-                  decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                          colors:  <Color>[accent,primary]
-                      )
-                  ),
-                  child: TextButton(
-                    style: ButtonStyle(
-                      foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                Column(
+                    children:  [
+                      SizedBox(
+                          width: 390,
+                          child: TextField(
+                              controller: emailController, // controller hinzugefügt
+                              obscureText: false,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'E-mail Adresse')
+                          )),
+                      SizedBox(height: 10),
+                      SizedBox(
+                          width: 390,
+                          child: TextField(
+                              controller: passwordController, // controller hinzugefügt
+                              obscureText: true,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Passwort'))),
+                    ]),
+                const SizedBox(height: 40),
+                Container(
+                    width: 320.0,
+                    height: 40.0,
+                    decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            colors:  <Color>[accent,primary]
+                        )
                     ),
-                    onPressed: () async{
-                      //überprüfung der login daten
-                      await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
-                      //Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
-                    },
-                    child: const Text('LOGIN'),
-                  )
-              ),
-              Container(
-                  child: TextButton(
-                    style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
-                    ),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> PwForgetScreen()));
-                    },
-                    child: const Text('PASSWORT VERGESSEN?'),
-                  )
-              )
-            ]
-        ),
-      ),
+                    child: TextButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
+                      ),
+                      onPressed: () async{
+                        //überprüfung der login daten
+                        await FirebaseAuth.instance.signInWithEmailAndPassword(email: emailController.text.trim(), password: passwordController.text.trim());
+                        //Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeScreen()));
+                      },
+                      child: const Text('LOGIN'),
+                    )
+                ),
+                Container(
+                    child: TextButton(
+                      style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(Colors.black)
+                      ),
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=> PwForgetScreen()));
+                      },
+                      child: const Text('PASSWORT VERGESSEN?'),
+                    )
+                )
+                ]
+            ),
+            )]
+    ),
     );
   }
 }
